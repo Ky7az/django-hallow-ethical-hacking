@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, ModelMultipleChoiceFilter
@@ -12,8 +12,8 @@ from HallowSoup.serializers import TagSerializer, ArticleSerializer, UserSeriali
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    # authentication_classes = (TokenAuthentication, )
-    # permission_classes = (IsAuthenticated, )
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
     lookup_field = 'slug'
 
 class ArticleFilter(FilterSet):
@@ -34,8 +34,8 @@ class ArticleFilter(FilterSet):
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    # authentication_classes = (TokenAuthentication, )
-    # permission_classes = (IsAuthenticated, )
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
     filter_backends = [DjangoFilterBackend]
     filterset_class = ArticleFilter
     lookup_field = 'slug'
@@ -43,4 +43,5 @@ class ArticleViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AllowAny, )
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
