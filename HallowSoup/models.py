@@ -12,6 +12,9 @@ class Tag(models.Model):
     def __str__(self):
         return '{}'.format(self.name)
 
+    class Meta:
+        ordering = ['name']
+
 ## ARTICLE ##
 
 class Article(models.Model):
