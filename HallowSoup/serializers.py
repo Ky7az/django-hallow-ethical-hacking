@@ -12,11 +12,8 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ('id',
                   'name',
-                  'slug')
-        extra_kwargs = {
-            'name': {'validators': []},
-            'slug': {'validators': []}
-        }
+                  'slug',
+                  'article_count')
 
 class ArticleSerializer(serializers.ModelSerializer):
 
@@ -77,7 +74,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'username',
                   'password')
-        # extra_kwargs = {'password': {'required': True, 'write_only': True}}
 
         def create(self, validated_data):
             user = User.objects.create_user(**validated_data)
