@@ -54,19 +54,20 @@ class ArticleSerializer(serializers.ModelSerializer):
         instance.content = validated_data.get('content', instance.content)
 
         # Tags
-        updated_tags = validated_data.get('tags', [])
-        deleted_tags = instance.tags.exclude(slug__in=[x['slug'] for x in updated_tags])
-        instance.tags.remove(*deleted_tags)
+        if 'tags' in validated_data:
+            updated_tags = validated_data.get('tags')
+            deleted_tags = instance.tags.exclude(slug__in=[x['slug'] for x in updated_tags])
+            instance.tags.remove(*deleted_tags)
 
-        for tag_data in updated_tags:
-            try:
-                tag = Tag.objects.get(slug=tag_data['slug'])
-            except ObjectDoesNotExist:
-                tag = Tag.objects.create(**tag_data)
-            try:
-                instance.tags.get(slug=tag.slug)
-            except ObjectDoesNotExist:
-                instance.tags.add(tag)
+            for tag_data in updated_tags:
+                try:
+                    tag = Tag.objects.get(slug=tag_data['slug'])
+                except ObjectDoesNotExist:
+                    tag = Tag.objects.create(**tag_data)
+                try:
+                    instance.tags.get(slug=tag.slug)
+                except ObjectDoesNotExist:
+                    instance.tags.add(tag)
 
         instance.save()
         return instance
