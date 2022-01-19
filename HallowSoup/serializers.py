@@ -1,7 +1,5 @@
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
 
 from HallowSoup.models import Tag, Article
 
@@ -14,14 +12,11 @@ class TagSerializer(serializers.ModelSerializer):
                   'name',
                   'slug',
                   'article_count')
-        extra_kwargs = {
-            'name': {'validators': []},
-            'slug': {'validators': []}
-        }
+
 
 class ArticleSerializer(serializers.ModelSerializer):
 
-    tags = TagSerializer(read_only=False, many=True)
+    tags = TagSerializer(many=True)
 
     class Meta:
         model = Article
@@ -71,19 +66,3 @@ class ArticleSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ('id',
-                  'username',
-                  'password')
-        extra_kwargs = {
-            'password': {'required': True, 'write_only': True}
-        }
-
-        def create(self, validated_data):
-            user = User.objects.create_user(**validated_data)
-            Token.objects.create(user=user)
-            return user
