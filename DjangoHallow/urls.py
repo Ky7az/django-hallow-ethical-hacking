@@ -19,10 +19,12 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 
 urlpatterns = [
+    # Auth
+    path('auth/', obtain_auth_token),
     # Admin
     path('admin/', admin.site.urls),
     # HallowSoup
     path('api/soup/', include('HallowSoup.urls')),
-    # Auth
-    path('auth/', obtain_auth_token)
+    # HallowPentest
+    path('api/pentest/', include('HallowPentest.urls'))
 ]

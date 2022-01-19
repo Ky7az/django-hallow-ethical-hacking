@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-from decouple import config
 import environ
 import os
 
@@ -53,7 +52,9 @@ INSTALLED_APPS = [
     # Django Filters
     'django_filters',
     # HallowSoup Application
-    'HallowSoup.apps.HallowSoupConfig'
+    'HallowSoup.apps.HallowSoupConfig',
+    # HallowPentest Application
+    'HallowPentest.apps.HallowPentestConfig'
 ]
 
 MIDDLEWARE = [
