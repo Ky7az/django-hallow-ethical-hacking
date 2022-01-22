@@ -1,9 +1,13 @@
+celery==5.2.3
 django==3.2.9
+django-celery-results==2.2.0
 django-cors-headers==3.10.0
 django-environ==0.8.1
 djangorestframework==3.12.4
 django-filter==2.4.0
 django-utils-six==2.0
 gunicorn==20.1.0
+paramiko==2.9.2
 psycopg2==2.9.2
 python-decouple==3.5
+redis==4.1.1

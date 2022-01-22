@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # Django Filters
     'django_filters',
+    # Django Celery Results
+    'django_celery_results',
     # HallowSoup Application
     'HallowSoup.apps.HallowSoupConfig',
     # HallowPentest Application
@@ -165,3 +167,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+# Celery settings
+
+CELERY_BROKER_URL = env("CELERY_BROKER")
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TASK_TRACK_STARTED = True

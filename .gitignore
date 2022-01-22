@@ -1,5 +1,4 @@
 .env
 *.pyc
 *.pyo
-*.sqlite3
 .vscode/
