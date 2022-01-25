@@ -12,7 +12,10 @@ class TagSerializer(serializers.ModelSerializer):
                   'name',
                   'slug',
                   'article_count')
-
+        extra_kwargs = {
+            'name': {'validators': []},
+            'slug': {'validators': []}
+        }
 
 class ArticleSerializer(serializers.ModelSerializer):
 
