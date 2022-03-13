@@ -1,6 +1,6 @@
-# DjangoHallow
+# Django Hallow Ethical Hacking
 Soup (Knowledge Base)  
-Pentest (Penetration Testing Lab)  
+Pentest (Penetration Testing Helper)  
 
 *Based on Django*  
-*Backend of [vue_hallow](https://github.com/Ky7az/vue_hallow)*
+*Backend of [vue-hallow-ethical-hacking](https://github.com/Ky7az/vue-hallow-ethical-hacking)*
