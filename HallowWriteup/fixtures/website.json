@@ -1,0 +1,38 @@
+[
+  {
+    "model": "HallowWriteup.website",
+    "pk": 1,
+    "fields": {
+      "name": "HackTheBox",
+      "slug": "htb",
+      "url": "https://www.hackthebox.com/"
+    }
+  },
+  {
+    "model": "HallowWriteup.website",
+    "pk": 2,
+    "fields": {
+      "name": "TryHackMe",
+      "slug": "thm",
+      "url": "https://tryhackme.com/"
+    }
+  },
+  {
+    "model": "HallowWriteup.website",
+    "pk": 3,
+    "fields": {
+      "name": "Root-Me",
+      "slug": "rootme",
+      "url": "https://www.root-me.org/"
+    }
+  },
+  {
+    "model": "HallowWriteup.website",
+    "pk": 4,
+    "fields": {
+      "name": "Intigriti",
+      "slug": "intigriti",
+      "url": "https://www.intigriti.com/"
+    }
+  }
+]

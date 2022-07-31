@@ -56,7 +56,9 @@ INSTALLED_APPS = [
     # HallowSoup Application
     'HallowSoup.apps.HallowSoupConfig',
     # HallowPentest Application
-    'HallowPentest.apps.HallowPentestConfig'
+    'HallowPentest.apps.HallowPentestConfig',
+    # HallowWriteup Application
+    'HallowWriteup.apps.HallowWriteupConfig'
 ]
 
 MIDDLEWARE = [

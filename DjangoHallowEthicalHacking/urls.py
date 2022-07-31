@@ -26,5 +26,7 @@ urlpatterns = [
     # HallowSoup
     path('api/soup/', include('HallowSoup.urls')),
     # HallowPentest
-    path('api/pentest/', include('HallowPentest.urls'))
+    path('api/pentest/', include('HallowPentest.urls')),
+    # HallowWriteup
+    path('api/writeup/', include('HallowWriteup.urls'))
 ]
