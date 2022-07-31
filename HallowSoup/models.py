@@ -19,6 +19,7 @@ class Tag(models.Model):
     class Meta:
         ordering = ['name']
 
+
 ## ARTICLE ##
 
 class Article(models.Model):
