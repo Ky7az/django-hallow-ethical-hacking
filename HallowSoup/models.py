@@ -14,7 +14,7 @@ class Tag(models.Model):
         return self.articles.count
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return f'{self.name}'
 
     class Meta:
         ordering = ['name']
@@ -34,7 +34,7 @@ class Article(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return f'{self.name}'
 
     class Meta:
         ordering = ['-write_date']

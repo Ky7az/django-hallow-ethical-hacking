@@ -14,7 +14,7 @@ class Tag(models.Model):
         return self.reports.count
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return f'{self.name}'
 
     class Meta:
         ordering = ['name']
@@ -30,7 +30,7 @@ class Website(models.Model):
     url = models.CharField(max_length=256, blank=True)
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return f'{self.name}'
 
     class Meta:
         ordering = ['name']
@@ -65,7 +65,7 @@ class Report(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return f'{self.name}'
 
     class Meta:
         ordering = ['-write_date']
