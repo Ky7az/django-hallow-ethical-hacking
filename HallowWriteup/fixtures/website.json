@@ -1,7 +1,14 @@
 [
   {
     "model": "HallowWriteup.website",
-    "pk": 1,
+    "fields": {
+      "name": "BattleH4ck",
+      "slug": "battleh4ck",
+      "url": "https://seela.io/battleh4ck/"
+    }
+  },
+  {
+    "model": "HallowWriteup.website",
     "fields": {
       "name": "HackTheBox",
       "slug": "htb",
@@ -10,16 +17,14 @@
   },
   {
     "model": "HallowWriteup.website",
-    "pk": 2,
     "fields": {
-      "name": "TryHackMe",
-      "slug": "thm",
-      "url": "https://tryhackme.com/"
+      "name": "Intigriti",
+      "slug": "intigriti",
+      "url": "https://www.intigriti.com/"
     }
   },
   {
     "model": "HallowWriteup.website",
-    "pk": 3,
     "fields": {
       "name": "Root-Me",
       "slug": "rootme",
@@ -28,11 +33,10 @@
   },
   {
     "model": "HallowWriteup.website",
-    "pk": 4,
     "fields": {
-      "name": "Intigriti",
-      "slug": "intigriti",
-      "url": "https://www.intigriti.com/"
+      "name": "TryHackMe",
+      "slug": "thm",
+      "url": "https://tryhackme.com/"
     }
   }
 ]

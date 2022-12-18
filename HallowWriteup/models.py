@@ -22,12 +22,22 @@ class Tag(models.Model):
 
 ## WEBSITE ##
 
+class WebsiteManager(models.Manager):
+
+    def get_by_natural_key(self, slug):
+        return self.get(slug=slug)
+
 class Website(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, unique=True)
     slug = models.SlugField(max_length=64, unique=True)
     url = models.CharField(max_length=256, blank=True)
+
+    objects = WebsiteManager()
+
+    def natural_key(self):
+        return (self.slug,)
 
     def __str__(self):
         return f'{self.name}'
