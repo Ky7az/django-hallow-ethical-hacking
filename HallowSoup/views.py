@@ -1,6 +1,7 @@
 from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, ModelMultipleChoiceFilter
 
@@ -33,6 +34,12 @@ class ArticleFilter(FilterSet):
         model = Article
         fields = ['name_or_content', 'tags']
 
+class ArticlePagination(PageNumberPagination):
+
+    page_size = 18
+    page_size_query_param = 'page_size'
+    max_page_size = 18
+    page_query_param = 'page'
 
 class ArticleViewSet(viewsets.ModelViewSet):
 
@@ -42,4 +49,5 @@ class ArticleViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, )
     filter_backends = [DjangoFilterBackend]
     filterset_class = ArticleFilter
+    pagination_class = ArticlePagination
     lookup_field = 'slug'
