@@ -10,7 +10,7 @@ class Tag(models.Model):
     slug = models.SlugField(max_length=64, unique=True)
 
     @property
-    def article_count(self):
+    def count(self):
         return self.articles.count
 
     def __str__(self):

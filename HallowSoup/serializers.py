@@ -11,7 +11,7 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'name',
                   'slug',
-                  'article_count')
+                  'count')
         extra_kwargs = {
             'name': {'validators': []},
             'slug': {'validators': []}
