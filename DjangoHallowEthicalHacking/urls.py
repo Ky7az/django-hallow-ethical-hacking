@@ -25,6 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # HallowSoup
     path('api/soup/', include('HallowSoup.urls')),
+    # HallowWatch
+    path('api/watch/', include('HallowWatch.urls')),
     # HallowPentest
     path('api/pentest/', include('HallowPentest.urls')),
     # HallowWriteup

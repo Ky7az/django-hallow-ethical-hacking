@@ -1,0 +1,26 @@
+[
+  {
+    "model": "HallowWatch.source",
+    "fields": { "name": "CVE Details [MITRE]", "slug": "cve-details", "source_type": "vulnerability", "url": "https://www.cvedetails.com/" }
+  },
+  {
+    "model": "HallowWatch.source",
+    "fields": { "name": "Debian", "slug": "debian", "source_type": "security", "url": "https://www.debian.org/security/" }
+  },
+  {
+    "model": "HallowWatch.source",
+    "fields": { "name": "Drupal", "slug": "drupal", "source_type": "security", "url": "https://www.drupal.org/security" }
+  },
+  {
+    "model": "HallowWatch.source",
+    "fields": { "name": "Exploit-DB", "slug": "exploit-db", "source_type": "exploit", "url": "https://www.exploit-db.com/" }
+  },
+  {
+    "model": "HallowWatch.source",
+    "fields": { "name": "NVD [NIST]", "slug": "nist-nvd", "source_type": "vulnerability", "url": "https://nvd.nist.gov/" }
+  },
+  {
+    "model": "HallowWatch.source",
+    "fields": { "name": "Ubuntu", "slug": "ubuntu", "source_type": "security", "url": "https://ubuntu.com/security/notices" }
+  }
+]

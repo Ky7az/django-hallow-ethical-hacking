@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django_celery_results',
     # HallowSoup Application
     'HallowSoup.apps.HallowSoupConfig',
+    # HallowWatch Application
+    'HallowWatch.apps.HallowWatchConfig',
     # HallowPentest Application
     'HallowPentest.apps.HallowPentestConfig',
     # HallowWriteup Application
@@ -176,3 +178,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CELERY_BROKER_URL = env("CELERY_BROKER")
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_TRACK_STARTED = True
+CELERY_TIMEZONE = "Europe/Paris"

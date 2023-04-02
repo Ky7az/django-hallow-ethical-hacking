@@ -1,5 +1,6 @@
 # DjangoHallowEthicalHacking
 Soup (Knowledge Base)  
+Watch (Security/Technology Watch)  
 Pentest (Penetration Testing Helper)  
 Writeup (Report Creator)  
 
