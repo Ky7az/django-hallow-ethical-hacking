@@ -13,6 +13,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'scrap-feeds-every-hour': {
         'task': 'HallowWatch.tasks.scrap_feeds',
-        'schedule': crontab(hour='*/1')
+        'schedule': crontab(minute=0, hour='*/1')
     }
 }
