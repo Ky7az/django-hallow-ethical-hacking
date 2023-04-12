@@ -166,6 +166,41 @@ class Source(models.Model):
                         'url': curl
                     }
 
+    def scrap_source_packetstorm(self, url, tags):
+        base_url = self.get_base_url(url)
+
+        for tag in tags.all():
+            r = requests.get(f'{url}search/?q={tag.name}&s=files')
+            soup = BeautifulSoup(r.text, 'html.parser')
+
+            for dl in soup.find_all('dl'):
+                if a := dl.dt.a:
+                    href = a['href']
+                    curl = f'{base_url}{href}'
+
+                    yield {
+                        'source': self,
+                        'tag': tag,
+                        'title': a.string,
+                        'url': curl
+                    }
+
+    def scrap_source_thehackernews(self, url, tags):
+        base_url = self.get_base_url(url)
+        r = requests.get(url)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        for post in soup.find_all('div', class_='body-post'):
+            h2 = post.find('h2')
+            link = post.find('a', class_='story-link')
+
+            if h2.string:
+                yield {
+                    'source': self,
+                    'title': h2.string,
+                    'url': link['href']
+                }
+
     def scrap_source_ubuntu(self, url, tags):
         base_url = self.get_base_url(url)
         r = requests.get(url)

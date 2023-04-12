@@ -21,6 +21,14 @@
   },
   {
     "model": "HallowWatch.source",
+    "fields": { "name": "Packet Storm", "slug": "packetstorm", "source_type": "security", "url": "https://packetstormsecurity.com/" }
+  },
+  {
+    "model": "HallowWatch.source",
+    "fields": { "name": "The Hacker News", "slug": "thehackernews", "source_type": "security", "url": "https://thehackernews.com/" }
+  },
+  {
+    "model": "HallowWatch.source",
     "fields": { "name": "Ubuntu", "slug": "ubuntu", "source_type": "security", "url": "https://ubuntu.com/security/notices" }
   }
 ]
