@@ -29,6 +29,7 @@ class Article(models.Model):
     slug = models.SlugField(max_length=128, unique=True)
     content = models.TextField()
     tags = models.ManyToManyField('HallowSoup.Tag', related_name='articles')
+    bookmarked = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now_add=True)
     write_date = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)

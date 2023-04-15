@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFilter, ModelMultipleChoiceFilter
+from django_filters.rest_framework import BooleanFilter, CharFilter, DjangoFilterBackend, FilterSet, ModelMultipleChoiceFilter
 
 from HallowSoup.models import Tag, Article
 from HallowSoup.serializers import TagSerializer, ArticleSerializer
@@ -26,13 +26,14 @@ class ArticleFilter(FilterSet):
         to_field_name='slug',
         queryset=Tag.objects.all()
     )
+    bookmarked = BooleanFilter(field_name='bookmarked')
 
     def filter_name_or_content(self, queryset, name, value):
         return queryset.filter(Q(name__icontains=value) | Q(content__icontains=value))
 
     class Meta:
         model = Article
-        fields = ['name_or_content', 'tags']
+        fields = ['name_or_content', 'tags', 'bookmarked']
 
 class ArticlePagination(PageNumberPagination):
 

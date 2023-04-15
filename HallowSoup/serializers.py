@@ -28,6 +28,7 @@ class ArticleSerializer(serializers.ModelSerializer):
                   'slug',
                   'content',
                   'tags',
+                  'bookmarked',
                   'create_date',
                   'write_date',
                   'active')
@@ -50,6 +51,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.slug = validated_data.get('slug', instance.slug)
         instance.content = validated_data.get('content', instance.content)
+        instance.bookmarked = validated_data.get('bookmarked', instance.bookmarked)
 
         # Tags
         if 'tags' in validated_data:
