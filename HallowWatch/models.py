@@ -146,6 +146,21 @@ class Source(models.Model):
                     'url': f'{base_url}/exploits/{row[0]}'
                 }
 
+    def scrap_source_hackernews(self, url, tags):
+        base_url = self.get_base_url(url)
+        r = requests.get(url)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        for span in soup.find_all('span', class_='titleline'):
+            a = span.a
+            href = a['href']
+            curl = href if href.startswith('http') else f'{base_url}/{href}'
+            yield {
+                'source': self,
+                'title': a.string,
+                'url': curl
+            }
+
     def scrap_source_nist_nvd(self, url, tags):
         api_url = 'https://services.nvd.nist.gov/rest/json/cves/2.0'
 

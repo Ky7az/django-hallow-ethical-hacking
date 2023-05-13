@@ -17,6 +17,10 @@
   },
   {
     "model": "HallowWatch.source",
+    "fields": { "name": "Hacker News (Y Combinator)", "slug": "hackernews", "source_type": "technology", "url": "https://news.ycombinator.com/best" }
+  },
+  {
+    "model": "HallowWatch.source",
     "fields": { "name": "NVD [NIST]", "slug": "nist-nvd", "source_type": "vulnerability", "url": "https://nvd.nist.gov/" }
   },
   {
