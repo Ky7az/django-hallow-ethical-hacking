@@ -1,7 +1,7 @@
-BeautifulSoup4==4.12.0
+BeautifulSoup4==4.12.2
 celery==5.2.7
-django==3.2.18
-django-celery-results==2.5.0
+django==3.2.19
+django-celery-results==2.5.1
 django-cors-headers==3.14.0
 django-environ==0.10.0
 djangorestframework==3.14.0
@@ -9,7 +9,7 @@ django-filter==2.4.0
 django-utils-six==2.0
 gunicorn==20.1.0
 paramiko==2.12.0
-psycopg2==2.9.5
+psycopg2==2.9.6
 python-decouple==3.8
-redis==4.5.4
-requests==2.28.2
+redis==4.5.5
+requests==2.31.0
