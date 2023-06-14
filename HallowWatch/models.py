@@ -71,17 +71,20 @@ class Source(models.Model):
         else:
             return []
 
-    def scrap_source_debian(self, url, tags):
-        today_year = str(datetime.date.today().year)
+    def scrap_source_cert_fr(self, url, tags):
         base_url = self.get_base_url(url)
-        r = requests.get(url + today_year)
-        soup = BeautifulSoup(r.text, 'html.parser')
 
-        for strong in soup.find_all('strong')[:10]:
-            if strong.a and strong.a.string.startswith('DSA'):
-                a = strong.a
+        for path in ['alerte', 'avis', 'actualite']:
+            url_path = f'{url}/{path}/'
+
+            r = requests.get(url_path)
+            r.encoding = 'utf-8'
+            soup = BeautifulSoup(r.text, 'html.parser')
+
+            for div in soup.find_all('div', class_='item-title'):
+                a = div.h3.a
                 href = a['href']
-                curl = f'{url}{today_year}/{href}'
+                curl = f'{base_url}{href}'
 
                 yield {
                     'source': self,
@@ -107,6 +110,24 @@ class Source(models.Model):
                     'title': td.string,
                     'url': curl
                 }
+
+    def scrap_source_debian(self, url, tags):
+        today_year = str(datetime.date.today().year)
+        base_url = self.get_base_url(url)
+        r = requests.get(url + today_year)
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        for strong in soup.find_all('strong')[:10]:
+            if strong.a and strong.a.string.startswith('DSA'):
+                a = strong.a
+                href = a['href']
+                curl = f'{url}{today_year}/{href}'
+
+                yield {
+                    'source': self,
+                    'title': a.string,
+                    'url': curl
+                } 
 
     def scrap_source_drupal(self, url, tags):
         base_url = self.get_base_url(url)

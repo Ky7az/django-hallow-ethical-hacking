@@ -1,6 +1,10 @@
 [
   {
     "model": "HallowWatch.source",
+    "fields": { "name": "CERT-FR [ANSSI]", "slug": "cert-fr", "source_type": "vulnerability", "url": "https://www.cert.ssi.gouv.fr/" }
+  },
+  {
+    "model": "HallowWatch.source",
     "fields": { "name": "CVE Details [MITRE]", "slug": "cve-details", "source_type": "vulnerability", "url": "https://www.cvedetails.com/" }
   },
   {
