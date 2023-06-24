@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from HallowSoup.models import Tag, Article
+from HallowSoup.models import Article, Tag
 
 
 class TagSerializer(serializers.ModelSerializer):

@@ -1,9 +1,8 @@
-from django.urls import path
 from django.conf.urls import include
+from django.urls import path
 from rest_framework import routers
 
-from HallowWriteup.views import TagViewSet, WebsiteViewSet, ReportViewSet
-
+from HallowWriteup.views import ReportViewSet, TagViewSet, WebsiteViewSet
 
 router = routers.DefaultRouter()
 router.register('tags', TagViewSet)

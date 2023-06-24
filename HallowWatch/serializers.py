@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from HallowWatch.models import Tag, Source, Feed, Content
+from HallowWatch.models import Content, Feed, Source, Tag
 
 
 class TagSerializer(serializers.ModelSerializer):

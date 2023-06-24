@@ -1,11 +1,10 @@
-from bs4 import BeautifulSoup
 import datetime
 import re
-import requests
 from urllib.parse import urlparse
 
+import requests
+from bs4 import BeautifulSoup
 from django.db import models
-
 
 ## TAG ##
 

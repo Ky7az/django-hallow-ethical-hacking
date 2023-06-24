@@ -1,7 +1,7 @@
 from celery import shared_task
 from django.core.exceptions import ObjectDoesNotExist
 
-from HallowWatch.models import Feed, Content
+from HallowWatch.models import Content, Feed
 
 
 @shared_task

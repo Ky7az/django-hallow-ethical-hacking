@@ -1,14 +1,18 @@
 from django.db.models import Q
-from rest_framework import viewsets, status
+from django_filters.rest_framework import (BooleanFilter, CharFilter,
+                                           ChoiceFilter, DjangoFilterBackend,
+                                           FilterSet, ModelChoiceFilter,
+                                           ModelMultipleChoiceFilter)
+from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django_filters.rest_framework import BooleanFilter, CharFilter, ChoiceFilter, DjangoFilterBackend, FilterSet, ModelChoiceFilter, ModelMultipleChoiceFilter
 
-from HallowWatch.models import Tag, Source, Feed, Content
-from HallowWatch.serializers import TagSerializer, SourceSerializer, FeedSerializer, ContentSerializer
+from HallowWatch.models import Content, Feed, Source, Tag
+from HallowWatch.serializers import (ContentSerializer, FeedSerializer,
+                                     SourceSerializer, TagSerializer)
 
 
 class TagViewSet(viewsets.ModelViewSet):

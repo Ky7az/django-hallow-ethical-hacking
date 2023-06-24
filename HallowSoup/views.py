@@ -1,12 +1,14 @@
 from django.db.models import Q
+from django_filters.rest_framework import (BooleanFilter, CharFilter,
+                                           DjangoFilterBackend, FilterSet,
+                                           ModelMultipleChoiceFilter)
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import BooleanFilter, CharFilter, DjangoFilterBackend, FilterSet, ModelMultipleChoiceFilter
 
-from HallowSoup.models import Tag, Article
-from HallowSoup.serializers import TagSerializer, ArticleSerializer
+from HallowSoup.models import Article, Tag
+from HallowSoup.serializers import ArticleSerializer, TagSerializer
 
 
 class TagViewSet(viewsets.ModelViewSet):

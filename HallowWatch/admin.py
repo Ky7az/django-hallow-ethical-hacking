@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Tag, Source, Feed, Content
+from .models import Content, Feed, Source, Tag
 
 admin.site.register(Tag)
 admin.site.register(Source)

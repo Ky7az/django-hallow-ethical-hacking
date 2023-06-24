@@ -1,6 +1,5 @@
 from django.db import models
 
-
 ## TAG ##
 
 class Tag(models.Model):
