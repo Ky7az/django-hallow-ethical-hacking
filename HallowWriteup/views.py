@@ -54,12 +54,14 @@ class ReportFilter(FilterSet):
         model = Report
         fields = ['name_or_content', 'tags', 'website', 'task_type', 'task_platform']
 
+
 class ReportPagination(PageNumberPagination):
 
     page_size = 18
     page_size_query_param = 'page_size'
     max_page_size = 18
     page_query_param = 'page'
+
 
 class ReportViewSet(viewsets.ModelViewSet):
 

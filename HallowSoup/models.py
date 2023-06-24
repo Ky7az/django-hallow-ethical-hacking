@@ -1,6 +1,7 @@
 from django.db import models
 
-## TAG ##
+
+# TAG
 
 class Tag(models.Model):
 
@@ -19,7 +20,7 @@ class Tag(models.Model):
         ordering = ['name']
 
 
-## ARTICLE ##
+# ARTICLE
 
 class Article(models.Model):
 

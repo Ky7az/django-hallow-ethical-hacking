@@ -61,7 +61,7 @@ class FeedSerializer(serializers.ModelSerializer):
         for tag_data in tags_data:
             try:
                 tag = Tag.objects.get(slug=tag_data['slug'])
-            except ObjectDoesNotExist as e:
+            except ObjectDoesNotExist:
                 tag = Tag.objects.create(**tag_data)
             feed.tags.add(tag)
 

@@ -11,6 +11,6 @@ router.register('sources', SourceViewSet)
 router.register('feeds', FeedViewSet)
 router.register('contents', ContentViewSet)
 
-urlpatterns = [ 
+urlpatterns = [
     path('', include(router.urls)),
 ]

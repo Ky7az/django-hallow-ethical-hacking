@@ -17,6 +17,7 @@ class TagSerializer(serializers.ModelSerializer):
             'slug': {'validators': []}
         }
 
+
 class ArticleSerializer(serializers.ModelSerializer):
 
     tags = TagSerializer(many=True)

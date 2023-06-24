@@ -6,7 +6,8 @@ import requests
 from bs4 import BeautifulSoup
 from django.db import models
 
-## TAG ##
+
+# TAG
 
 class Tag(models.Model):
 
@@ -25,12 +26,13 @@ class Tag(models.Model):
         ordering = ['name']
 
 
-## SOURCE ##
+# SOURCE
 
 class SourceManager(models.Manager):
 
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
+
 
 class Source(models.Model):
 
@@ -58,7 +60,7 @@ class Source(models.Model):
 
     class Meta:
         ordering = ['name']
-    
+
     def get_base_url(self, url):
         parsed = urlparse(url)
         return f'{parsed.scheme}://{parsed.netloc}'
@@ -89,7 +91,7 @@ class Source(models.Model):
                     'source': self,
                     'title': a.string,
                     'url': curl
-                } 
+                }
 
     def scrap_source_cve_details(self, url, tags):
         base_url = self.get_base_url(url)
@@ -112,7 +114,6 @@ class Source(models.Model):
 
     def scrap_source_debian(self, url, tags):
         today_year = str(datetime.date.today().year)
-        base_url = self.get_base_url(url)
         r = requests.get(url + today_year)
         soup = BeautifulSoup(r.text, 'html.parser')
 
@@ -126,7 +127,7 @@ class Source(models.Model):
                     'source': self,
                     'title': a.string,
                     'url': curl
-                } 
+                }
 
     def scrap_source_drupal(self, url, tags):
         base_url = self.get_base_url(url)
@@ -150,14 +151,14 @@ class Source(models.Model):
         csv_rows = r.text.split('\n')
 
         for tag in tags.all():
-            rows = []            
+            rows = []
             for r in csv_rows[1:]:
                 csv_cols = r.split(',')
                 if len(csv_cols) == 17 and tag.name.lower() in csv_cols[2].lower():
                     csv_cols[0] = int(csv_cols[0])
                     rows.append(csv_cols)
 
-            rows.sort(key = lambda c: c[0])
+            rows.sort(key=lambda c: c[0])
             for row in rows[-10:]:
                 yield {
                     'source': self,
@@ -221,7 +222,6 @@ class Source(models.Model):
                     }
 
     def scrap_source_thehackernews(self, url, tags):
-        base_url = self.get_base_url(url)
         r = requests.get(url)
         soup = BeautifulSoup(r.text, 'html.parser')
 
@@ -253,7 +253,7 @@ class Source(models.Model):
             }
 
 
-## FEED ##
+# FEED
 
 class Feed(models.Model):
 
@@ -285,7 +285,7 @@ class Feed(models.Model):
             yield content_data
 
 
-## CONTENT ##
+# CONTENT
 
 class Content(models.Model):
 

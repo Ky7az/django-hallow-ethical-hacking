@@ -9,6 +9,6 @@ router.register('tags', TagViewSet)
 router.register('websites', WebsiteViewSet)
 router.register('reports', ReportViewSet)
 
-urlpatterns = [ 
+urlpatterns = [
     path('', include(router.urls)),
 ]

@@ -15,6 +15,7 @@ def run_scrap(feed_id):
             content = Content.objects.create(**content_data)
         content.save()
 
+
 @shared_task
 def scrap_feeds():
 

@@ -1,6 +1,7 @@
 from django.db import models
 
-## TAG ##
+
+# TAG
 
 class Tag(models.Model):
 
@@ -19,12 +20,13 @@ class Tag(models.Model):
         ordering = ['name']
 
 
-## WEBSITE ##
+# WEBSITE
 
 class WebsiteManager(models.Manager):
 
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
+
 
 class Website(models.Model):
 
@@ -45,18 +47,18 @@ class Website(models.Model):
         ordering = ['name']
 
 
-## REPORT ##
+# REPORT
 
 class Report(models.Model):
 
     TASK_TYPES = [
         ('', ''),
-        ('bugbounty', 'Bug Bounty'), 
+        ('bugbounty', 'Bug Bounty'),
         ('ctf', 'Capture The Flag')
     ]
     TASK_PLATFORMS = [
         ('', ''),
-        ('linux', 'Linux'), 
+        ('linux', 'Linux'),
         ('windows', 'Windows')
     ]
 

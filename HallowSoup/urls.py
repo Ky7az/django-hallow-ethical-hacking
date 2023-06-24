@@ -8,6 +8,6 @@ router = routers.DefaultRouter()
 router.register('tags', TagViewSet)
 router.register('articles', ArticleViewSet)
 
-urlpatterns = [ 
+urlpatterns = [
     path('', include(router.urls)),
 ]

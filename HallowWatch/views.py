@@ -1,14 +1,11 @@
-from django.db.models import Q
 from django_filters.rest_framework import (BooleanFilter, CharFilter,
                                            ChoiceFilter, DjangoFilterBackend,
-                                           FilterSet, ModelChoiceFilter,
+                                           FilterSet,
                                            ModelMultipleChoiceFilter)
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 from HallowWatch.models import Content, Feed, Source, Tag
 from HallowWatch.serializers import (ContentSerializer, FeedSerializer,
@@ -58,12 +55,14 @@ class ContentFilter(FilterSet):
         model = Content
         fields = ['title', 'tag', 'source_type', 'viewed', 'bookmarked']
 
+
 class ContentPagination(PageNumberPagination):
 
     page_size = 20
     page_size_query_param = 'page_size'
     max_page_size = 20
     page_query_param = 'page'
+
 
 class ContentViewSet(viewsets.ModelViewSet):
 
