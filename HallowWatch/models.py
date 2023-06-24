@@ -78,7 +78,7 @@ class Source(models.Model):
         for path in ['alerte', 'avis', 'actualite']:
             url_path = f'{url}/{path}/'
 
-            r = requests.get(url_path)
+            r = requests.get(url_path, timeout=10)
             r.encoding = 'utf-8'
             soup = BeautifulSoup(r.text, 'html.parser')
 
@@ -97,7 +97,7 @@ class Source(models.Model):
         base_url = self.get_base_url(url)
 
         for tag in tags.all():
-            r = requests.get(f'{url}vulnerability-search.php?f=1&vendor=&product={tag.name}&cveid=&msid=&bidno=&cweid=&cvssscoremin=&cvssscoremax=&psy=&psm=&pey=&pem=&usy=&usm=&uey=&uem=')
+            r = requests.get(f'{url}vulnerability-search.php?f=1&vendor=&product={tag.name}&cveid=&msid=&bidno=&cweid=&cvssscoremin=&cvssscoremax=&psy=&psm=&pey=&pem=&usy=&usm=&uey=&uem=', timeout=10)
             soup = BeautifulSoup(r.text, 'html.parser')
 
             for tr in soup.find_all('tr', class_='srrowns')[:10]:
@@ -114,7 +114,7 @@ class Source(models.Model):
 
     def scrap_source_debian(self, url, tags):
         today_year = str(datetime.date.today().year)
-        r = requests.get(url + today_year)
+        r = requests.get(url + today_year, timeout=10)
         soup = BeautifulSoup(r.text, 'html.parser')
 
         for strong in soup.find_all('strong')[:10]:
@@ -131,7 +131,7 @@ class Source(models.Model):
 
     def scrap_source_drupal(self, url, tags):
         base_url = self.get_base_url(url)
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         soup = BeautifulSoup(r.text, 'html.parser')
 
         for div in soup.find_all('div', class_=re.compile('^views-row')):
@@ -147,7 +147,7 @@ class Source(models.Model):
 
     def scrap_source_exploit_db(self, url, tags):
         base_url = self.get_base_url(url)
-        r = requests.get('https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv')
+        r = requests.get('https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv', timeout=10)
         csv_rows = r.text.split('\n')
 
         for tag in tags.all():
@@ -169,7 +169,7 @@ class Source(models.Model):
 
     def scrap_source_hackernews(self, url, tags):
         base_url = self.get_base_url(url)
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         soup = BeautifulSoup(r.text, 'html.parser')
 
         for span in soup.find_all('span', class_='titleline'):
@@ -186,10 +186,10 @@ class Source(models.Model):
         api_url = 'https://services.nvd.nist.gov/rest/json/cves/2.0'
 
         for tag in tags.all():
-            r = requests.get(f'{api_url}?keywordSearch={tag.name}&resultsPerPage=0')
+            r = requests.get(f'{api_url}?keywordSearch={tag.name}&resultsPerPage=0', timeout=10)
             if total := int(r.json()['totalResults']):
                 start_index = total - 10 if total > 10 else 0
-                r = requests.get(f'{api_url}?keywordSearch={tag.name}&resultsPerPage=10&startIndex={start_index}')
+                r = requests.get(f'{api_url}?keywordSearch={tag.name}&resultsPerPage=10&startIndex={start_index}', timeout=10)
                 data = r.json()
 
                 for vuln in data['vulnerabilities']:
@@ -206,7 +206,7 @@ class Source(models.Model):
         base_url = self.get_base_url(url)
 
         for tag in tags.all():
-            r = requests.get(f'{url}search/?q={tag.name}&s=files')
+            r = requests.get(f'{url}search/?q={tag.name}&s=files', timeout=10)
             soup = BeautifulSoup(r.text, 'html.parser')
 
             for dl in soup.find_all('dl'):
@@ -222,7 +222,7 @@ class Source(models.Model):
                     }
 
     def scrap_source_thehackernews(self, url, tags):
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         soup = BeautifulSoup(r.text, 'html.parser')
 
         for post in soup.find_all('div', class_='body-post'):
@@ -238,7 +238,7 @@ class Source(models.Model):
 
     def scrap_source_ubuntu(self, url, tags):
         base_url = self.get_base_url(url)
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         soup = BeautifulSoup(r.text, 'html.parser')
 
         for art in soup.find_all('article'):
