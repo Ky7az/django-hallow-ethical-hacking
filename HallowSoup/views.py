@@ -1,7 +1,11 @@
 from django.db.models import Q
-from django_filters.rest_framework import (BooleanFilter, CharFilter,
-                                           DjangoFilterBackend, FilterSet,
-                                           ModelMultipleChoiceFilter)
+from django_filters.rest_framework import (
+    BooleanFilter,
+    CharFilter,
+    DjangoFilterBackend,
+    FilterSet,
+    ModelMultipleChoiceFilter
+)
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination

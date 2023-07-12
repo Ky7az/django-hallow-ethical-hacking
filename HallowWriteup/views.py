@@ -1,16 +1,22 @@
 from django.db.models import Q
-from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
-                                           FilterSet,
-                                           ModelMultipleChoiceFilter,
-                                           MultipleChoiceFilter)
+from django_filters.rest_framework import (
+    CharFilter,
+    DjangoFilterBackend,
+    FilterSet,
+    ModelMultipleChoiceFilter,
+    MultipleChoiceFilter
+)
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 
 from HallowWriteup.models import Report, Tag, Website
-from HallowWriteup.serializers import (ReportSerializer, TagSerializer,
-                                       WebsiteSerializer)
+from HallowWriteup.serializers import (
+    ReportSerializer,
+    TagSerializer,
+    WebsiteSerializer
+)
 
 
 class TagViewSet(viewsets.ModelViewSet):

@@ -7,8 +7,6 @@ from bs4 import BeautifulSoup
 from django.db import models
 
 
-# TAG
-
 class Tag(models.Model):
 
     id = models.AutoField(primary_key=True)
@@ -25,8 +23,6 @@ class Tag(models.Model):
     class Meta:
         ordering = ['name']
 
-
-# SOURCE
 
 class SourceManager(models.Manager):
 
@@ -253,12 +249,10 @@ class Source(models.Model):
             }
 
 
-# FEED
-
 class Feed(models.Model):
 
     id = models.AutoField(primary_key=True)
-    source = models.OneToOneField('HallowWatch.Source', on_delete=models.CASCADE, null=True, unique=True)
+    source = models.OneToOneField('HallowWatch.Source', on_delete=models.CASCADE, unique=True)
     tags = models.ManyToManyField('HallowWatch.Tag', related_name='feeds')
     create_date = models.DateTimeField(auto_now_add=True)
     write_date = models.DateTimeField(auto_now=True)
@@ -284,8 +278,6 @@ class Feed(models.Model):
             content_data.update(feed=self)
             yield content_data
 
-
-# CONTENT
 
 class Content(models.Model):
 

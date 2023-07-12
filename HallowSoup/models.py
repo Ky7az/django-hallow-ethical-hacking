@@ -1,8 +1,6 @@
 from django.db import models
 
 
-# TAG
-
 class Tag(models.Model):
 
     id = models.AutoField(primary_key=True)
@@ -11,7 +9,7 @@ class Tag(models.Model):
 
     @property
     def count(self):
-        return self.articles.count
+        return self.articles.count()
 
     def __str__(self):
         return f'{self.name}'
@@ -19,8 +17,6 @@ class Tag(models.Model):
     class Meta:
         ordering = ['name']
 
-
-# ARTICLE
 
 class Article(models.Model):
 

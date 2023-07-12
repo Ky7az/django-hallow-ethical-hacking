@@ -78,10 +78,18 @@ class ContentSerializer(serializers.ModelSerializer):
         model = Content
         fields = ('id',
                   'feed',
+                  'feed_id',
                   'source',
+                  'source_id',
                   'tag',
+                  'tag_id',
                   'title',
                   'url',
                   'viewed',
                   'bookmarked',
                   'create_date')
+        extra_kwargs = {
+            'feed_id': {'source': 'feed', 'write_only': True},
+            'source_id': {'source': 'source', 'write_only': True},
+            'tag_id': {'source': 'tag', 'write_only': True}
+        }

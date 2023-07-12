@@ -1,5 +1,6 @@
 BeautifulSoup4==4.12.2
 celery==5.2.7
+coverage==7.2.7
 django==3.2.19
 django-celery-results==2.5.1
 django-cors-headers==3.14.0

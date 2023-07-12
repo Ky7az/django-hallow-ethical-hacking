@@ -1,15 +1,23 @@
-from django_filters.rest_framework import (BooleanFilter, CharFilter,
-                                           ChoiceFilter, DjangoFilterBackend,
-                                           FilterSet,
-                                           ModelMultipleChoiceFilter)
+from django_filters.rest_framework import (
+    BooleanFilter,
+    CharFilter,
+    ChoiceFilter,
+    DjangoFilterBackend,
+    FilterSet,
+    ModelMultipleChoiceFilter
+)
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 
 from HallowWatch.models import Content, Feed, Source, Tag
-from HallowWatch.serializers import (ContentSerializer, FeedSerializer,
-                                     SourceSerializer, TagSerializer)
+from HallowWatch.serializers import (
+    ContentSerializer,
+    FeedSerializer,
+    SourceSerializer,
+    TagSerializer
+)
 
 
 class TagViewSet(viewsets.ModelViewSet):
