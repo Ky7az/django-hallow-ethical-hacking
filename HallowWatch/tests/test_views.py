@@ -238,10 +238,11 @@ class FeedAPITestCase(APITestCase):
 class ContentAPITestCase(APITestCase):
 
     def setUp(self):
+        tag = Tag.objects.create(name='Tag', slug='tag')
         for x in range(1, 3):
             source = Source.objects.create(name=f'Source {x}', slug=f'source-{x}', source_type='security', url=f'www.source-{x}.tld')
             feed = Feed.objects.create(source=source)
-            Content.objects.create(feed=feed, source=source, title=f'Title-{x}', url=f'www.content-{x}.tld')
+            Content.objects.create(feed=feed, source=source, tag=tag, title=f'Title-{x}', url=f'www.content-{x}.tld')
 
     def authenticate_user(self):
         user = User.objects.create_user('user', 'user@user.tld', 'password')
@@ -256,6 +257,63 @@ class ContentAPITestCase(APITestCase):
         self.authenticate_user()
         response = self.client.get('/api/watch/contents/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), 2)
+
+    def test_list_contents_with_filters(self):
+        # Authorized
+        self.authenticate_user()
+
+        # title
+        response = self.client.get('/api/watch/contents/?title=x')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 0)
+        self.assertEqual(len(response.data['results']), 0)
+
+        response = self.client.get('/api/watch/contents/?title=1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(len(response.data['results']), 1)
+
+        # tags
+        response = self.client.get('/api/watch/contents/?tag=x')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['tag'][0].code, 'invalid_choice')
+
+        response = self.client.get('/api/watch/contents/?tag=tag')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(len(response.data['results']), 2)
+
+        # source_type
+        response = self.client.get('/api/watch/contents/?source_type=x')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['source_type'][0].code, 'invalid_choice')
+
+        response = self.client.get('/api/watch/contents/?source_type=security')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(len(response.data['results']), 2)
+
+        # viewed
+        response = self.client.get('/api/watch/contents/?viewed=true')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 0)
+        self.assertEqual(len(response.data['results']), 0)
+
+        response = self.client.get('/api/watch/contents/?viewed=false')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(len(response.data['results']), 2)
+
+        # bookmarked
+        response = self.client.get('/api/watch/contents/?bookmarked=true')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 0)
+        self.assertEqual(len(response.data['results']), 0)
+
+        response = self.client.get('/api/watch/contents/?bookmarked=false')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 2)
         self.assertEqual(len(response.data['results']), 2)
 
     def test_create_content(self):
