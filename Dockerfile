@@ -1,4 +1,4 @@
-FROM python:3.9.16-alpine
+FROM python:3.9.18-alpine
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -6,8 +6,7 @@ ENV PYTHONUNBUFFERED 1
 ENV APP_HOME=/app
 ENV APP_USER=appuser
 
-RUN addgroup -S $APP_USER
-RUN adduser -H -D -S -G $APP_USER $APP_USER
+RUN addgroup -S $APP_USER && adduser -H -D -S -G $APP_USER $APP_USER
 
 WORKDIR $APP_HOME
 
@@ -22,7 +21,7 @@ COPY ./entrypoint.sh ./
 COPY . ./
 
 RUN python3 manage.py collectstatic --no-input --clear
-
+# hadolint ignore=DL3059
 RUN chown -R $APP_USER:$APP_USER $APP_HOME
 USER $APP_USER
 
