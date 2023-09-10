@@ -10,6 +10,18 @@ variables:
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
+docker_checkov:
+  stage: docker_check
+  image: 
+    name: bridgecrew/checkov:2.4.30
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  before_script: []
+  script:
+    - checkov -d .
+  allow_failure: true
+
 docker_hadolint:
   stage: docker_check
   image: hadolint/hadolint:2.12.0-alpine

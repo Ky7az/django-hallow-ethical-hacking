@@ -25,4 +25,5 @@ RUN python3 manage.py collectstatic --no-input --clear
 RUN chown -R $APP_USER:$APP_USER $APP_HOME
 USER $APP_USER
 
+HEALTHCHECK --interval=30s --timeout=3s CMD python3 manage.py health_check || exit 1
 ENTRYPOINT ["/app/entrypoint.sh"]

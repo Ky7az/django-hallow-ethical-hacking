@@ -46,6 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # CORS
     'corsheaders',
+    # Health Check
+    'health_check',
+    'health_check.db',
+    'health_check.contrib.migrations',
+    'health_check.contrib.celery_ping',
+    'health_check.contrib.redis',
     # Django REST Framework
     'rest_framework',
     'rest_framework.authtoken',
@@ -173,9 +179,14 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
+# Redis settings
+
+REDIS_URL = env("REDIS_URL")
+
+
 # Celery settings
 
-CELERY_BROKER_URL = env("CELERY_BROKER")
+CELERY_BROKER_URL = '{}/0'.format(env("REDIS_URL"))
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TIMEZONE = "Europe/Paris"

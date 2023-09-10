@@ -22,6 +22,8 @@ urlpatterns = [
     path('auth/', obtain_auth_token),
     # Admin
     path('admin/', admin.site.urls),
+    # Health Check
+    path('hc/', include('health_check.urls')),
     # HallowSoup
     path('api/soup/', include('HallowSoup.urls')),
     # HallowWatch
