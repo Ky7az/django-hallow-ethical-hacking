@@ -1,0 +1,61 @@
+stages:
+  - code_check
+  - code_security
+  - docker_check
+  - docker_build
+  - docker_security
+  - code_test
+  - docker_release
+
+code_flake8:
+  stage: code_check
+  image: python:3.9.18
+  before_script:
+    - pip install flake8
+  script:
+    - flake8 .
+  allow_failure: true
+
+code_isort:
+  stage: code_check
+  image: python:3.9.18
+  before_script:
+    - pip install isort
+  script:
+    - isort . --check-only
+  allow_failure: true
+
+sast_bandit:
+  stage: code_security
+  image: python:3.9.18
+  before_script:
+    - pip install bandit
+  script:
+    - bandit -r .
+  allow_failure: true
+
+sast_semgrep:
+  stage: code_security
+  image: python:3.9.18
+  before_script:
+    - pip install semgrep
+  script:
+    - semgrep --config=auto --junit-xml --output sast-report.xml --error .
+  artifacts:
+    reports:
+      junit:
+        - sast-report.xml
+  allow_failure: true
+
+sca_safety:
+  stage: code_security
+  image: python:3.9.18
+  before_script:
+    - pip install safety
+  script:
+    - safety check -r requirements.txt
+  allow_failure: true
+
+include:
+  - '.docker.gitlab-ci.yml'
+  - '.django.gitlab-ci.yml'

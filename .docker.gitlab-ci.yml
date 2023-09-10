@@ -1,0 +1,49 @@
+image: docker:24.0.4
+
+services: 
+  - docker:24.0.4-dind
+
+variables:
+  TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+  TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:latest
+
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+docker_hadolint:
+  stage: docker_check
+  image: hadolint/hadolint:2.12.0-alpine
+  before_script: []
+  script:
+    - hadolint Dockerfile
+  allow_failure: true
+
+image_build:
+  stage: docker_build
+  script:
+    - cp $TEST_ENV_FILE .env
+    - docker build -t $TAG_COMMIT .
+    - docker push $TAG_COMMIT
+
+image_dockle:
+  stage: docker_security
+  script:
+    - docker pull $TAG_COMMIT
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -e DOCKLE_ACCEPT_FILES=settings.py goodwithtech/dockle:v0.4.13 --exit-code 1 $TAG_COMMIT
+  allow_failure: true
+
+image_trivy:
+  stage: docker_security
+  script:
+    - docker pull $TAG_COMMIT
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.45.0 image --exit-code 1 --severity CRITICAL $TAG_COMMIT
+  allow_failure: true
+
+image_release:
+  stage: docker_release
+  script:
+    - docker pull $TAG_COMMIT
+    - docker tag $TAG_COMMIT $TAG_LATEST
+    - docker push $TAG_LATEST
+  only:
+    - main
