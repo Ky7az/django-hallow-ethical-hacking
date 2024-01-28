@@ -9,7 +9,7 @@ stages:
 
 code_flake8:
   stage: code_check
-  image: python:3.9.18
+  image: python:3.12.1
   before_script:
     - pip install flake8
   script:
@@ -18,7 +18,7 @@ code_flake8:
 
 code_isort:
   stage: code_check
-  image: python:3.9.18
+  image: python:3.12.1
   before_script:
     - pip install isort
   script:
@@ -27,7 +27,7 @@ code_isort:
 
 sast_bandit:
   stage: code_security
-  image: python:3.9.18
+  image: python:3.12.1
   before_script:
     - pip install bandit
   script:
@@ -36,7 +36,7 @@ sast_bandit:
 
 sast_semgrep:
   stage: code_security
-  image: python:3.9.18
+  image: python:3.12.1
   before_script:
     - pip install semgrep
   script:
@@ -49,7 +49,7 @@ sast_semgrep:
 
 sca_safety:
   stage: code_security
-  image: python:3.9.18
+  image: python:3.12.1
   before_script:
     - pip install safety
   script:

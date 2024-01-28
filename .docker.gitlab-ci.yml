@@ -13,7 +13,7 @@ before_script:
 docker_checkov:
   stage: docker_check
   image: 
-    name: bridgecrew/checkov:2.4.30
+    name: bridgecrew/checkov:3.1.72
     entrypoint:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -48,7 +48,7 @@ image_trivy:
   stage: docker_security
   script:
     - docker pull $TAG_COMMIT
-    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.45.0 image --exit-code 1 --severity CRITICAL $TAG_COMMIT
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.48.3 image --exit-code 1 --severity CRITICAL $TAG_COMMIT
   allow_failure: true
 
 image_release:
