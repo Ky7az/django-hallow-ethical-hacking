@@ -23,7 +23,7 @@ class TagSerializerTestCase(TestCase):
             'count': 0
         }
         serializer = TagSerializer(tag)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)
 
 
 class SourceSerializerTestCase(TestCase):
@@ -39,7 +39,7 @@ class SourceSerializerTestCase(TestCase):
             'url': 'www.source.tld'
         }
         serializer = SourceSerializer(source)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)
 
 
 class FeedSerializerTestCase(TestCase):
@@ -59,7 +59,7 @@ class FeedSerializerTestCase(TestCase):
             'count': 1
         }
         serializer = FeedSerializer(feed)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)
 
 
 class ContentSerializerTestCase(TestCase):
@@ -96,4 +96,4 @@ class ContentSerializerTestCase(TestCase):
             'create_date': localtime(content.create_date).isoformat().replace('+00:00', 'Z'),
         }
         serializer = ContentSerializer(content)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)

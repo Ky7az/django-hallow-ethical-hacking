@@ -18,7 +18,7 @@ class TagSerializerTestCase(TestCase):
             'count': 0
         }
         serializer = TagSerializer(tag)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)
 
 
 class ArticleSerializerTestCase(TestCase):
@@ -39,4 +39,4 @@ class ArticleSerializerTestCase(TestCase):
             'active': True
         }
         serializer = ArticleSerializer(article)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)

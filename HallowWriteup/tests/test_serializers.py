@@ -22,7 +22,7 @@ class TagSerializerTestCase(TestCase):
             'count': 0
         }
         serializer = TagSerializer(tag)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)
 
 
 class WebsiteSerializerTestCase(TestCase):
@@ -36,7 +36,7 @@ class WebsiteSerializerTestCase(TestCase):
             'url': 'https://www.website.tld'
         }
         serializer = WebsiteSerializer(website)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)
 
 
 class ReportSerializerTestCase(TestCase):
@@ -71,4 +71,4 @@ class ReportSerializerTestCase(TestCase):
             'active': True
         }
         serializer = ReportSerializer(report)
-        self.assertEquals(serializer.data, expected)
+        self.assertEqual(serializer.data, expected)
