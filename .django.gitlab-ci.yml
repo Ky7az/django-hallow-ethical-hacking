@@ -2,7 +2,7 @@ image: docker:24.0.4
 
 services: 
   - docker:24.0.4-dind
-  - postgres:14.10-alpine
+  - postgres:14.11-alpine
   - redis:7.2.4-alpine
 
 variables:
