@@ -7,22 +7,23 @@ stages:
   - code_test
   - docker_release
 
-code_flake8:
-  stage: code_check
-  image: python:3.12.2
-  before_script:
-    - pip install flake8
-  script:
-    - flake8 .
-  allow_failure: true
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
 
-code_isort:
+code_pre_commit:
   stage: code_check
   image: python:3.12.2
   before_script:
-    - pip install isort
+    - pip install pre-commit
   script:
-    - isort . --check-only
+    - if [ $CI_COMMIT_BRANCH == "main" ] ; then
+    -   pre-commit run --all-files
+    - else
+    -   git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    -   pre-commit run --from-ref FETCH_HEAD --to-ref HEAD
+    - fi
   allow_failure: true
 
 sast_bandit:

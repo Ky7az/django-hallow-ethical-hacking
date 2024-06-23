@@ -57,5 +57,5 @@ image_release:
     - docker pull $TAG_COMMIT
     - docker tag $TAG_COMMIT $TAG_LATEST
     - docker push $TAG_LATEST
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
