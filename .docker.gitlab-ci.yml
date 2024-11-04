@@ -1,7 +1,7 @@
-image: docker:24.0.4
+image: docker:24.0.9
 
 services: 
-  - docker:24.0.4-dind
+  - docker:24.0.9-dind
 
 variables:
   TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
@@ -13,7 +13,7 @@ before_script:
 docker_checkov:
   stage: docker_check
   image: 
-    name: bridgecrew/checkov:3.2.37
+    name: bridgecrew/checkov:3.2.277
     entrypoint:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -48,7 +48,7 @@ image_trivy:
   stage: docker_security
   script:
     - docker pull $TAG_COMMIT
-    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.49.1 image --exit-code 1 --severity CRITICAL $TAG_COMMIT
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.57.0 image --exit-code 1 --severity CRITICAL $TAG_COMMIT
   allow_failure: true
 
 image_release:

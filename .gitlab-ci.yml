@@ -14,7 +14,7 @@ workflow:
 
 code_pre_commit:
   stage: code_check
-  image: python:3.12.2
+  image: python:3.12.7
   before_script:
     - pip install pre-commit
   script:
@@ -28,7 +28,7 @@ code_pre_commit:
 
 sast_bandit:
   stage: code_security
-  image: python:3.12.2
+  image: python:3.12.7
   before_script:
     - pip install bandit
   script:
@@ -37,7 +37,7 @@ sast_bandit:
 
 sast_semgrep:
   stage: code_security
-  image: python:3.12.2
+  image: python:3.12.7
   before_script:
     - pip install semgrep
   script:
@@ -50,7 +50,7 @@ sast_semgrep:
 
 sca_safety:
   stage: code_security
-  image: python:3.12.2
+  image: python:3.12.7
   before_script:
     - pip install safety
   script:

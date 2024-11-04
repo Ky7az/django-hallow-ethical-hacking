@@ -1,9 +1,9 @@
-image: docker:24.0.4
+image: docker:24.0.9
 
 services: 
-  - docker:24.0.4-dind
-  - postgres:14.11-alpine
-  - redis:7.2.4-alpine
+  - docker:24.0.9-dind
+  - postgres:14.13-alpine
+  - redis:7.4.1-alpine
 
 variables:
   POSTGRES_DB: test
