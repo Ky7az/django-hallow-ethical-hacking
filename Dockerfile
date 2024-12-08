@@ -1,4 +1,4 @@
-FROM python:3.12.7-alpine
+FROM python:3.12.8-alpine
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -11,7 +11,7 @@ RUN addgroup -S $APP_USER && adduser -H -D -S -G $APP_USER $APP_USER
 WORKDIR $APP_HOME
 
 # hadolint ignore=DL3018
-RUN apk update && apk --no-cache add postgresql-dev gcc python3-dev musl-dev libffi-dev make rust cargo
+RUN apk update && apk --no-cache add postgresql-dev python3-dev
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip
 COPY ./requirements.txt ./
