@@ -86,7 +86,7 @@ CSRF_TRUSTED_ORIGINS = [f'https://{h}' for h in ALLOWED_HOSTS]
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:8080',
+    'http://127.0.0.1:5173',
 )
 
 ROOT_URLCONF = 'DjangoHallowEthicalHacking.urls'
