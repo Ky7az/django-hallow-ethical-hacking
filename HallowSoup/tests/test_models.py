@@ -4,7 +4,6 @@ from HallowSoup.models import Article, Tag
 
 
 class TagModelTestCase(TestCase):
-
     def setUp(self):
         Tag.objects.create(name='Tag', slug='tag')
         Article.objects.create(name='Article', slug='article', content='Content')
@@ -21,7 +20,6 @@ class TagModelTestCase(TestCase):
 
 
 class ArticleModelTestCase(TestCase):
-
     def setUp(self):
         Article.objects.create(name='Article', slug='article', content='Content')
 

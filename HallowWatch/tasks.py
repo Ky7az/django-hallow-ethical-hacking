@@ -6,7 +6,6 @@ from HallowWatch.models import Content, Feed
 
 @shared_task
 def run_scrap(feed_id):
-
     feed = Feed.objects.get(id=feed_id)
     for content_data in feed.scrap_feed():
         try:
@@ -18,7 +17,6 @@ def run_scrap(feed_id):
 
 @shared_task
 def scrap_feeds():
-
     feeds = Feed.objects.all()
     for feed in feeds:
         res = run_scrap.delay(feed.id)

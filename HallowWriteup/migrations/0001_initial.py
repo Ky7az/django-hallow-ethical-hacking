@@ -5,11 +5,9 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
@@ -41,15 +39,43 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=64, unique=True)),
                 ('slug', models.SlugField(max_length=64, unique=True)),
-                ('task_type', models.CharField(choices=[('', ''), ('bugbounty', 'Bug Bounty'), ('ctf', 'Capture The Flag')], max_length=9)),
-                ('task_platform', models.CharField(blank=True, choices=[('', ''), ('linux', 'Linux'), ('windows', 'Windows')], max_length=7)),
+                (
+                    'task_type',
+                    models.CharField(
+                        choices=[
+                            ('', ''),
+                            ('bugbounty', 'Bug Bounty'),
+                            ('ctf', 'Capture The Flag'),
+                        ],
+                        max_length=9,
+                    ),
+                ),
+                (
+                    'task_platform',
+                    models.CharField(
+                        blank=True,
+                        choices=[('', ''), ('linux', 'Linux'), ('windows', 'Windows')],
+                        max_length=7,
+                    ),
+                ),
                 ('task_url', models.CharField(blank=True, max_length=256)),
                 ('content', models.TextField()),
                 ('create_date', models.DateTimeField(auto_now_add=True)),
                 ('write_date', models.DateTimeField(auto_now=True)),
                 ('active', models.BooleanField(default=True)),
-                ('tags', models.ManyToManyField(related_name='reports', to='HallowWriteup.Tag')),
-                ('website', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='HallowWriteup.website')),
+                (
+                    'tags',
+                    models.ManyToManyField(
+                        related_name='reports', to='HallowWriteup.Tag'
+                    ),
+                ),
+                (
+                    'website',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='HallowWriteup.website',
+                    ),
+                ),
             ],
             options={
                 'ordering': ['-write_date'],

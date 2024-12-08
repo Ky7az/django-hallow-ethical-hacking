@@ -4,11 +4,16 @@ from HallowWriteup.models import Report, Tag, Website
 
 
 class TagModelTestCase(TestCase):
-
     def setUp(self):
         Tag.objects.create(name='Tag', slug='tag')
         website = Website.objects.create(name='Website', slug='website')
-        Report.objects.create(name='Report', slug='report', content='Content', website=website, task_type='ctf')
+        Report.objects.create(
+            name='Report',
+            slug='report',
+            content='Content',
+            website=website,
+            task_type='ctf',
+        )
 
     def test_count_property(self):
         tag = Tag.objects.get(slug='tag')
@@ -22,9 +27,10 @@ class TagModelTestCase(TestCase):
 
 
 class WebsiteModelTestCase(TestCase):
-
     def setUp(self):
-        Website.objects.create(name='Website', slug='website', url='https://www.website.tld')
+        Website.objects.create(
+            name='Website', slug='website', url='https://www.website.tld'
+        )
 
     def test_natural_key(self):
         website = Website.objects.get(slug='website')
@@ -37,10 +43,15 @@ class WebsiteModelTestCase(TestCase):
 
 
 class ReportModelTestCase(TestCase):
-
     def setUp(self):
         website = Website.objects.create(name='Website', slug='website')
-        Report.objects.create(name='Report', slug='report', website=website, task_type='ctf', content='Content')
+        Report.objects.create(
+            name='Report',
+            slug='report',
+            website=website,
+            task_type='ctf',
+            content='Content',
+        )
 
     def test_string_method(self):
         report = Report.objects.get(slug='report')

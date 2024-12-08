@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
@@ -31,5 +32,5 @@ urlpatterns = [
     # HallowPentest
     path('api/pentest/', include('HallowPentest.urls')),
     # HallowWriteup
-    path('api/writeup/', include('HallowWriteup.urls'))
+    path('api/writeup/', include('HallowWriteup.urls')),
 ]

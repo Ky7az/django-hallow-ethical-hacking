@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('HallowSoup', '0003_auto_20220101_1825'),
     ]

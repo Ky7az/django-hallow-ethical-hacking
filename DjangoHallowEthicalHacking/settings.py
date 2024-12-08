@@ -17,22 +17,19 @@ import environ
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-env = environ.Env(
-    DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, [])
-)
+env = environ.Env(DEBUG=(bool, False), ALLOWED_HOSTS=(list, []))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -66,7 +63,7 @@ INSTALLED_APPS = [
     # HallowPentest Application
     'HallowPentest.apps.HallowPentestConfig',
     # HallowWriteup Application
-    'HallowWriteup.apps.HallowWriteupConfig'
+    'HallowWriteup.apps.HallowWriteupConfig',
 ]
 
 MIDDLEWARE = [
@@ -85,9 +82,7 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [f'https://{h}' for h in ALLOWED_HOSTS]
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:5173',
-)
+CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:5173',)
 
 ROOT_URLCONF = 'DjangoHallowEthicalHacking.urls'
 
@@ -114,13 +109,13 @@ WSGI_APPLICATION = 'DjangoHallowEthicalHacking.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": env("DB_ENGINE"),
-        "NAME": env("DB_DATABASE"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT")
+    'default': {
+        'ENGINE': env('DB_ENGINE'),
+        'NAME': env('DB_DATABASE'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
 
@@ -182,13 +177,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Redis settings
 
-REDIS_URL = env("REDIS_URL")
+REDIS_URL = env('REDIS_URL')
 
 
 # Celery settings
 
-CELERY_BROKER_URL = '{}/0'.format(env("REDIS_URL"))
+CELERY_BROKER_URL = '{}/0'.format(env('REDIS_URL'))
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_RESULT_EXPIRES = 0
 CELERY_TASK_TRACK_STARTED = True
-CELERY_TIMEZONE = "Europe/Paris"
+CELERY_TIMEZONE = 'Europe/Paris'
