@@ -5,59 +5,51 @@ from HallowWriteup.models import Report, Tag, Website
 
 
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Tag
-        fields = ('id',
-                  'name',
-                  'slug',
-                  'count')
-        extra_kwargs = {
-            'name': {'validators': []},
-            'slug': {'validators': []}
-        }
+        fields = ('id', 'name', 'slug', 'count')
+        extra_kwargs = {'name': {'validators': []}, 'slug': {'validators': []}}
 
 
 class WebsiteSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Website
-        fields = ('id',
-                  'name',
-                  'slug',
-                  'url')
+        fields = ('id', 'name', 'slug', 'url')
 
 
 class ReportSerializer(serializers.ModelSerializer):
-
     tags = TagSerializer(many=True)
     website = WebsiteSerializer(read_only=True)
     task_type = serializers.ChoiceField(choices=Report.TASK_TYPES)
     task_platform = serializers.ChoiceField(choices=Report.TASK_PLATFORMS)
-    task_type_display = serializers.CharField(source='get_task_type_display', read_only=True)
-    task_platform_display = serializers.CharField(source='get_task_platform_display', read_only=True)
+    task_type_display = serializers.CharField(
+        source='get_task_type_display', read_only=True
+    )
+    task_platform_display = serializers.CharField(
+        source='get_task_platform_display', read_only=True
+    )
 
     class Meta:
         model = Report
-        fields = ('id',
-                  'name',
-                  'slug',
-                  'tags',
-                  'website',
-                  'website_id',
-                  'task_type',
-                  'task_platform',
-                  'task_type_display',
-                  'task_platform_display',
-                  'task_url',
-                  'content',
-                  'create_date',
-                  'write_date',
-                  'active')
+        fields = (
+            'id',
+            'name',
+            'slug',
+            'tags',
+            'website',
+            'website_id',
+            'task_type',
+            'task_platform',
+            'task_type_display',
+            'task_platform_display',
+            'task_url',
+            'content',
+            'create_date',
+            'write_date',
+            'active',
+        )
 
-        extra_kwargs = {
-            'website_id': {'source': 'website', 'write_only': True}
-        }
+        extra_kwargs = {'website_id': {'source': 'website', 'write_only': True}}
 
     def create(self, validated_data):
         tags_data = validated_data.pop('tags')
@@ -81,7 +73,9 @@ class ReportSerializer(serializers.ModelSerializer):
         # Tags
         if 'tags' in validated_data:
             updated_tags = validated_data.get('tags')
-            deleted_tags = instance.tags.exclude(slug__in=[x['slug'] for x in updated_tags])
+            deleted_tags = instance.tags.exclude(
+                slug__in=[x['slug'] for x in updated_tags]
+            )
             instance.tags.remove(*deleted_tags)
 
             for tag_data in updated_tags:

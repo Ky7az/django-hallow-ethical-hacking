@@ -8,23 +8,18 @@ from HallowSoup.serializers import ArticleSerializer, TagSerializer
 
 
 class TagSerializerTestCase(TestCase):
-
     def test_tag(self):
         tag = Tag.objects.create(name='Tag', slug='tag')
-        expected = {
-            'id': tag.id,
-            'name': 'Tag',
-            'slug': 'tag',
-            'count': 0
-        }
+        expected = {'id': tag.id, 'name': 'Tag', 'slug': 'tag', 'count': 0}
         serializer = TagSerializer(tag)
         self.assertEqual(serializer.data, expected)
 
 
 class ArticleSerializerTestCase(TestCase):
-
     def test_article(self):
-        article = Article.objects.create(name='Article', slug='article', content='Content')
+        article = Article.objects.create(
+            name='Article', slug='article', content='Content'
+        )
         tag = Tag.objects.create(name='Tag', slug='tag')
         article.tags.add(tag)
         expected = {
@@ -32,11 +27,19 @@ class ArticleSerializerTestCase(TestCase):
             'name': 'Article',
             'slug': 'article',
             'content': 'Content',
-            'tags': [OrderedDict([('id', tag.id), ('name', 'Tag'), ('slug', 'tag'), ('count', 1)])],
+            'tags': [
+                OrderedDict(
+                    [('id', tag.id), ('name', 'Tag'), ('slug', 'tag'), ('count', 1)]
+                )
+            ],
             'bookmarked': False,
-            'create_date': localtime(article.create_date).isoformat().replace('+00:00', 'Z'),
-            'write_date': localtime(article.write_date).isoformat().replace('+00:00', 'Z'),
-            'active': True
+            'create_date': localtime(article.create_date)
+            .isoformat()
+            .replace('+00:00', 'Z'),
+            'write_date': localtime(article.write_date)
+            .isoformat()
+            .replace('+00:00', 'Z'),
+            'active': True,
         }
         serializer = ArticleSerializer(article)
         self.assertEqual(serializer.data, expected)

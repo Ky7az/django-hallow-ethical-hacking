@@ -4,7 +4,7 @@ from django_filters.rest_framework import (
     CharFilter,
     DjangoFilterBackend,
     FilterSet,
-    ModelMultipleChoiceFilter
+    ModelMultipleChoiceFilter,
 )
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
@@ -16,21 +16,17 @@ from HallowSoup.serializers import ArticleSerializer, TagSerializer
 
 
 class TagViewSet(viewsets.ModelViewSet):
-
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (IsAuthenticated, )
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'slug'
 
 
 class ArticleFilter(FilterSet):
-
     name_or_content = CharFilter(method='filter_name_or_content')
     tags = ModelMultipleChoiceFilter(
-        field_name='tags__slug',
-        to_field_name='slug',
-        queryset=Tag.objects.all()
+        field_name='tags__slug', to_field_name='slug', queryset=Tag.objects.all()
     )
     bookmarked = BooleanFilter(field_name='bookmarked')
 
@@ -43,7 +39,6 @@ class ArticleFilter(FilterSet):
 
 
 class ArticlePagination(PageNumberPagination):
-
     page_size = 18
     page_size_query_param = 'page_size'
     max_page_size = 18
@@ -51,11 +46,10 @@ class ArticlePagination(PageNumberPagination):
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
-
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (IsAuthenticated, )
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
     filterset_class = ArticleFilter
     pagination_class = ArticlePagination

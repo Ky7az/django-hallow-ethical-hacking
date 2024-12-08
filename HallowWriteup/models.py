@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Tag(models.Model):
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, unique=True)
     slug = models.SlugField(max_length=64, unique=True)
@@ -19,13 +18,11 @@ class Tag(models.Model):
 
 
 class WebsiteManager(models.Manager):
-
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
 
 
 class Website(models.Model):
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, unique=True)
     slug = models.SlugField(max_length=64, unique=True)
@@ -44,17 +41,8 @@ class Website(models.Model):
 
 
 class Report(models.Model):
-
-    TASK_TYPES = [
-        ('', ''),
-        ('bugbounty', 'Bug Bounty'),
-        ('ctf', 'Capture The Flag')
-    ]
-    TASK_PLATFORMS = [
-        ('', ''),
-        ('linux', 'Linux'),
-        ('windows', 'Windows')
-    ]
+    TASK_TYPES = [('', ''), ('bugbounty', 'Bug Bounty'), ('ctf', 'Capture The Flag')]
+    TASK_PLATFORMS = [('', ''), ('linux', 'Linux'), ('windows', 'Windows')]
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, unique=True)

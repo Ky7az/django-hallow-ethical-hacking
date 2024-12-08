@@ -4,12 +4,15 @@ from HallowWatch.models import Content, Feed, Source, Tag
 
 
 class TagModelTestCase(TestCase):
-
     def setUp(self):
         tag = Tag.objects.create(name='Tag', slug='tag')
-        source = Source.objects.create(name='Source', slug='source', source_type='security', url='www.source.tld')
+        source = Source.objects.create(
+            name='Source', slug='source', source_type='security', url='www.source.tld'
+        )
         feed = Feed.objects.create(source=source)
-        Content.objects.create(feed=feed, source=source, tag=tag, title='Title', url='www.content.tld')
+        Content.objects.create(
+            feed=feed, source=source, tag=tag, title='Title', url='www.content.tld'
+        )
 
     def test_count_property(self):
         tag = Tag.objects.get(slug='tag')
@@ -22,9 +25,10 @@ class TagModelTestCase(TestCase):
 
 
 class SourceModelTestCase(TestCase):
-
     def setUp(self):
-        Source.objects.create(name='Source', slug='source', source_type='security', url='www.source.tld')
+        Source.objects.create(
+            name='Source', slug='source', source_type='security', url='www.source.tld'
+        )
 
     def test_natural_key(self):
         source = Source.objects.get(slug='source')
@@ -37,11 +41,14 @@ class SourceModelTestCase(TestCase):
 
 
 class FeedModelTestCase(TestCase):
-
     def setUp(self):
-        source = Source.objects.create(name='Source', slug='source', source_type='security', url='www.source.tld')
+        source = Source.objects.create(
+            name='Source', slug='source', source_type='security', url='www.source.tld'
+        )
         feed = Feed.objects.create(source=source)
-        Content.objects.create(feed=feed, source=source, title='Title', url='www.content.tld')
+        Content.objects.create(
+            feed=feed, source=source, title='Title', url='www.content.tld'
+        )
 
     def test_tag_names_property(self):
         feed = Feed.objects.get()
@@ -64,11 +71,14 @@ class FeedModelTestCase(TestCase):
 
 
 class ContentModelTestCase(TestCase):
-
     def setUp(self):
-        source = Source.objects.create(name='Source', slug='source', source_type='security', url='www.source.tld')
+        source = Source.objects.create(
+            name='Source', slug='source', source_type='security', url='www.source.tld'
+        )
         feed = Feed.objects.create(source=source)
-        Content.objects.create(feed=feed, source=source, title='Title', url='www.content.tld')
+        Content.objects.create(
+            feed=feed, source=source, title='Title', url='www.content.tld'
+        )
 
     def test_string_method(self):
         content = Content.objects.get()

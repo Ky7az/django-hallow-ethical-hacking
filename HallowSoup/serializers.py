@@ -5,34 +5,28 @@ from HallowSoup.models import Article, Tag
 
 
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Tag
-        fields = ('id',
-                  'name',
-                  'slug',
-                  'count')
-        extra_kwargs = {
-            'name': {'validators': []},
-            'slug': {'validators': []}
-        }
+        fields = ('id', 'name', 'slug', 'count')
+        extra_kwargs = {'name': {'validators': []}, 'slug': {'validators': []}}
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-
     tags = TagSerializer(many=True)
 
     class Meta:
         model = Article
-        fields = ('id',
-                  'name',
-                  'slug',
-                  'content',
-                  'tags',
-                  'bookmarked',
-                  'create_date',
-                  'write_date',
-                  'active')
+        fields = (
+            'id',
+            'name',
+            'slug',
+            'content',
+            'tags',
+            'bookmarked',
+            'create_date',
+            'write_date',
+            'active',
+        )
 
     def create(self, validated_data):
         tags_data = validated_data.pop('tags')
@@ -57,7 +51,9 @@ class ArticleSerializer(serializers.ModelSerializer):
         # Tags
         if 'tags' in validated_data:
             updated_tags = validated_data.get('tags')
-            deleted_tags = instance.tags.exclude(slug__in=[x['slug'] for x in updated_tags])
+            deleted_tags = instance.tags.exclude(
+                slug__in=[x['slug'] for x in updated_tags]
+            )
             instance.tags.remove(*deleted_tags)
 
             for tag_data in updated_tags:

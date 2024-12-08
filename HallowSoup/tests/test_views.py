@@ -7,7 +7,6 @@ from HallowSoup.models import Article, Tag
 
 
 class TagAPITestCase(APITestCase):
-
     def setUp(self):
         for x in range(1, 3):
             Tag.objects.create(name=f'Tag {x}', slug=f'tag-{x}')
@@ -28,10 +27,7 @@ class TagAPITestCase(APITestCase):
         self.assertEqual(len(response.data), 2)
 
     def test_create_tag(self):
-        data = {
-            'name': 'Tag',
-            'slug': 'tag'
-        }
+        data = {'name': 'Tag', 'slug': 'tag'}
         # Unauthorized
         response = self.client.post('/api/soup/tags/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -45,17 +41,18 @@ class TagAPITestCase(APITestCase):
 
     def test_update_tag(self):
         tag_1 = Tag.objects.get(slug='tag-1')
-        data = {
-            'name': 'Tag X',
-            'slug': 'tag-x'
-        }
+        data = {'name': 'Tag X', 'slug': 'tag-x'}
         # Unauthorized
-        response = self.client.patch(f'/api/soup/tags/{tag_1.slug}/', data, format='json')
+        response = self.client.patch(
+            f'/api/soup/tags/{tag_1.slug}/', data, format='json'
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         # Authorized
         self.authenticate_user()
-        response = self.client.patch(f'/api/soup/tags/{tag_1.slug}/', data, format='json')
+        response = self.client.patch(
+            f'/api/soup/tags/{tag_1.slug}/', data, format='json'
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         tag_1.refresh_from_db()
         self.assertEqual(tag_1.name, data['name'])
@@ -77,11 +74,12 @@ class TagAPITestCase(APITestCase):
 
 
 class ArticleAPITestCase(APITestCase):
-
     def setUp(self):
         tag = Tag.objects.create(name='Tag', slug='tag')
         for x in range(1, 3):
-            article = Article.objects.create(name=f'Article {x}', slug=f'article-{x}', content=f'Content {x}')
+            article = Article.objects.create(
+                name=f'Article {x}', slug=f'article-{x}', content=f'Content {x}'
+            )
             article.tags.add(tag)
 
     def authenticate_user(self):
@@ -141,13 +139,10 @@ class ArticleAPITestCase(APITestCase):
             'name': 'Article',
             'slug': 'article',
             'content': 'Content',
-            'tags': [{
-                'name': 'Tag 1',
-                'slug': 'tag-1'
-            }, {
-                'name': 'Tag 2',
-                'slug': 'tag-2'
-            }]
+            'tags': [
+                {'name': 'Tag 1', 'slug': 'tag-1'},
+                {'name': 'Tag 2', 'slug': 'tag-2'},
+            ],
         }
         # Unauthorized
         response = self.client.post('/api/soup/articles/', data, format='json')
@@ -169,21 +164,22 @@ class ArticleAPITestCase(APITestCase):
         data = {
             'content': 'Content X',
             'bookmarked': True,
-            'tags': [{
-                'name': 'Tag 1',
-                'slug': 'tag-1'
-            }, {
-                'name': 'Tag 2',
-                'slug': 'tag-2'
-            }]
+            'tags': [
+                {'name': 'Tag 1', 'slug': 'tag-1'},
+                {'name': 'Tag 2', 'slug': 'tag-2'},
+            ],
         }
         # Unauthorized
-        response = self.client.patch(f'/api/soup/articles/{article_1.slug}/', data, format='json')
+        response = self.client.patch(
+            f'/api/soup/articles/{article_1.slug}/', data, format='json'
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         # Authorized
         self.authenticate_user()
-        response = self.client.patch(f'/api/soup/articles/{article_1.slug}/', data, format='json')
+        response = self.client.patch(
+            f'/api/soup/articles/{article_1.slug}/', data, format='json'
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         article_1.refresh_from_db()
         self.assertEqual(article_1.content, data['content'])

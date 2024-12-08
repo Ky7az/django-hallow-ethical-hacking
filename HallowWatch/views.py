@@ -4,7 +4,7 @@ from django_filters.rest_framework import (
     ChoiceFilter,
     DjangoFilterBackend,
     FilterSet,
-    ModelMultipleChoiceFilter
+    ModelMultipleChoiceFilter,
 )
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
@@ -16,12 +16,11 @@ from HallowWatch.serializers import (
     ContentSerializer,
     FeedSerializer,
     SourceSerializer,
-    TagSerializer
+    TagSerializer,
 )
 
 
 class TagViewSet(viewsets.ModelViewSet):
-
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     authentication_classes = (TokenAuthentication,)
@@ -30,7 +29,6 @@ class TagViewSet(viewsets.ModelViewSet):
 
 
 class SourceViewSet(viewsets.ModelViewSet):
-
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
     authentication_classes = (TokenAuthentication,)
@@ -39,7 +37,6 @@ class SourceViewSet(viewsets.ModelViewSet):
 
 
 class FeedViewSet(viewsets.ModelViewSet):
-
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
     authentication_classes = (TokenAuthentication,)
@@ -48,14 +45,13 @@ class FeedViewSet(viewsets.ModelViewSet):
 
 
 class ContentFilter(FilterSet):
-
     title = CharFilter(field_name='title', lookup_expr='icontains')
     tag = ModelMultipleChoiceFilter(
-        field_name='tag__slug',
-        to_field_name='slug',
-        queryset=Tag.objects.all()
+        field_name='tag__slug', to_field_name='slug', queryset=Tag.objects.all()
     )
-    source_type = ChoiceFilter(field_name='source__source_type', choices=Source.SOURCE_TYPES)
+    source_type = ChoiceFilter(
+        field_name='source__source_type', choices=Source.SOURCE_TYPES
+    )
     viewed = BooleanFilter(field_name='viewed')
     bookmarked = BooleanFilter(field_name='bookmarked')
 
@@ -65,7 +61,6 @@ class ContentFilter(FilterSet):
 
 
 class ContentPagination(PageNumberPagination):
-
     page_size = 20
     page_size_query_param = 'page_size'
     max_page_size = 20
@@ -73,7 +68,6 @@ class ContentPagination(PageNumberPagination):
 
 
 class ContentViewSet(viewsets.ModelViewSet):
-
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
     authentication_classes = (TokenAuthentication,)

@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Tag(models.Model):
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, unique=True)
     slug = models.SlugField(max_length=64, unique=True)
@@ -19,7 +18,6 @@ class Tag(models.Model):
 
 
 class Article(models.Model):
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128, unique=True)
     slug = models.SlugField(max_length=128, unique=True)

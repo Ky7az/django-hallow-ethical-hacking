@@ -8,7 +8,6 @@ from django.db import models
 
 
 class Tag(models.Model):
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, unique=True)
     slug = models.SlugField(max_length=64, unique=True)
@@ -25,19 +24,17 @@ class Tag(models.Model):
 
 
 class SourceManager(models.Manager):
-
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
 
 
 class Source(models.Model):
-
     SOURCE_TYPES = [
         ('', ''),
         ('exploit', 'Exploit'),
         ('security', 'Security'),
         ('technology', 'Technology'),
-        ('vulnerability', 'Vulnerability')
+        ('vulnerability', 'Vulnerability'),
     ]
 
     id = models.AutoField(primary_key=True)
@@ -83,17 +80,16 @@ class Source(models.Model):
                 href = a['href']
                 curl = f'{base_url}{href}'
 
-                yield {
-                    'source': self,
-                    'title': a.string,
-                    'url': curl
-                }
+                yield {'source': self, 'title': a.string, 'url': curl}
 
     def scrap_source_cve_details(self, url, tags):
         base_url = self.get_base_url(url)
 
         for tag in tags.all():
-            r = requests.get(f'{url}vulnerability-search.php?f=1&vendor=&product={tag.name}&cveid=&msid=&bidno=&cweid=&cvssscoremin=&cvssscoremax=&psy=&psm=&pey=&pem=&usy=&usm=&uey=&uem=', timeout=10)
+            r = requests.get(
+                f'{url}vulnerability-search.php?f=1&vendor=&product={tag.name}&cveid=&msid=&bidno=&cweid=&cvssscoremin=&cvssscoremax=&psy=&psm=&pey=&pem=&usy=&usm=&uey=&uem=',
+                timeout=10,
+            )
             soup = BeautifulSoup(r.text, 'html.parser')
 
             for tr in soup.find_all('tr', class_='srrowns')[:10]:
@@ -101,12 +97,7 @@ class Source(models.Model):
                 href = td.a['href']
                 curl = f'{base_url}{href}'
 
-                yield {
-                    'source': self,
-                    'tag': tag,
-                    'title': td.string,
-                    'url': curl
-                }
+                yield {'source': self, 'tag': tag, 'title': td.string, 'url': curl}
 
     def scrap_source_debian(self, url, tags):
         today_year = str(datetime.date.today().year)
@@ -119,11 +110,7 @@ class Source(models.Model):
                 href = a['href']
                 curl = f'{url}{today_year}/{href}'
 
-                yield {
-                    'source': self,
-                    'title': a.string,
-                    'url': curl
-                }
+                yield {'source': self, 'title': a.string, 'url': curl}
 
     def scrap_source_drupal(self, url, tags):
         base_url = self.get_base_url(url)
@@ -135,15 +122,14 @@ class Source(models.Model):
             href = h2.a['href']
             curl = f'{base_url}{href}'
 
-            yield {
-                'source': self,
-                'title': h2.string,
-                'url': curl
-            }
+            yield {'source': self, 'title': h2.string, 'url': curl}
 
     def scrap_source_exploit_db(self, url, tags):
         base_url = self.get_base_url(url)
-        r = requests.get('https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv', timeout=10)
+        r = requests.get(
+            'https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv',
+            timeout=10,
+        )
         csv_rows = r.text.split('\n')
 
         for tag in tags.all():
@@ -160,7 +146,7 @@ class Source(models.Model):
                     'source': self,
                     'tag': tag,
                     'title': row[2],
-                    'url': f'{base_url}/exploits/{row[0]}'
+                    'url': f'{base_url}/exploits/{row[0]}',
                 }
 
     def scrap_source_hackernews(self, url, tags):
@@ -172,31 +158,27 @@ class Source(models.Model):
             a = span.a
             href = a['href']
             curl = href if href.startswith('http') else f'{base_url}/{href}'
-            yield {
-                'source': self,
-                'title': a.string,
-                'url': curl
-            }
+            yield {'source': self, 'title': a.string, 'url': curl}
 
     def scrap_source_nist_nvd(self, url, tags):
         api_url = 'https://services.nvd.nist.gov/rest/json/cves/2.0'
 
         for tag in tags.all():
-            r = requests.get(f'{api_url}?keywordSearch={tag.name}&resultsPerPage=0', timeout=10)
+            r = requests.get(
+                f'{api_url}?keywordSearch={tag.name}&resultsPerPage=0', timeout=10
+            )
             if total := int(r.json()['totalResults']):
                 start_index = total - 10 if total > 10 else 0
-                r = requests.get(f'{api_url}?keywordSearch={tag.name}&resultsPerPage=10&startIndex={start_index}', timeout=10)
+                r = requests.get(
+                    f'{api_url}?keywordSearch={tag.name}&resultsPerPage=10&startIndex={start_index}',
+                    timeout=10,
+                )
                 data = r.json()
 
                 for vuln in data['vulnerabilities']:
                     cve_id = vuln['cve']['id']
                     curl = f'{url}vuln/detail/{cve_id}'
-                    yield {
-                        'source': self,
-                        'tag': tag,
-                        'title': cve_id,
-                        'url': curl
-                    }
+                    yield {'source': self, 'tag': tag, 'title': cve_id, 'url': curl}
 
     def scrap_source_packetstorm(self, url, tags):
         base_url = self.get_base_url(url)
@@ -210,12 +192,7 @@ class Source(models.Model):
                     href = a['href']
                     curl = f'{base_url}{href}'
 
-                    yield {
-                        'source': self,
-                        'tag': tag,
-                        'title': a.string,
-                        'url': curl
-                    }
+                    yield {'source': self, 'tag': tag, 'title': a.string, 'url': curl}
 
     def scrap_source_thehackernews(self, url, tags):
         r = requests.get(url, timeout=10)
@@ -226,11 +203,7 @@ class Source(models.Model):
             link = post.find('a', class_='story-link')
 
             if h2.string:
-                yield {
-                    'source': self,
-                    'title': h2.string,
-                    'url': link['href']
-                }
+                yield {'source': self, 'title': h2.string, 'url': link['href']}
 
     def scrap_source_ubuntu(self, url, tags):
         base_url = self.get_base_url(url)
@@ -242,17 +215,14 @@ class Source(models.Model):
             href = h3.a['href']
             curl = f'{base_url}{href}'
 
-            yield {
-                'source': self,
-                'title': h3.a.string,
-                'url': curl
-            }
+            yield {'source': self, 'title': h3.a.string, 'url': curl}
 
 
 class Feed(models.Model):
-
     id = models.AutoField(primary_key=True)
-    source = models.OneToOneField('HallowWatch.Source', on_delete=models.CASCADE, unique=True)
+    source = models.OneToOneField(
+        'HallowWatch.Source', on_delete=models.CASCADE, unique=True
+    )
     tags = models.ManyToManyField('HallowWatch.Tag', related_name='feeds')
     create_date = models.DateTimeField(auto_now_add=True)
     write_date = models.DateTimeField(auto_now=True)
@@ -280,7 +250,6 @@ class Feed(models.Model):
 
 
 class Content(models.Model):
-
     id = models.AutoField(primary_key=True)
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)

@@ -1,12 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from HallowWatch.views import (
-    ContentViewSet,
-    FeedViewSet,
-    SourceViewSet,
-    TagViewSet
-)
+from HallowWatch.views import ContentViewSet, FeedViewSet, SourceViewSet, TagViewSet
 
 router = routers.DefaultRouter()
 router.register('tags', TagViewSet)
