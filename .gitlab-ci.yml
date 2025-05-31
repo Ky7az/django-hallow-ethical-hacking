@@ -1,3 +1,4 @@
+---
 stages:
   - code_check
   - code_security
@@ -12,10 +13,15 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
 
+variables:
+  TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+  TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:latest
+
 code_pre_commit:
   stage: code_check
   image: python:3.12.8-alpine
   before_script:
+    - apk add git
     - pip install pre-commit
   script:
     - if [ $CI_COMMIT_BRANCH == "main" ] ; then
@@ -48,15 +54,88 @@ sast_semgrep:
         - sast-report.xml
   allow_failure: true
 
-sca_safety:
-  stage: code_security
-  image: python:3.12.8-alpine
-  before_script:
-    - pip install safety
+docker_checkov:
+  stage: docker_check
+  image:
+    name: bridgecrew/checkov:3.2.334
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   script:
-    - safety check -r requirements.txt
+    - checkov -d .
   allow_failure: true
 
-include:
-  - '.docker.gitlab-ci.yml'
-  - '.django.gitlab-ci.yml'
+docker_hadolint:
+  stage: docker_check
+  image: hadolint/hadolint:2.12.0-alpine
+  script:
+    - hadolint Dockerfile
+  allow_failure: true
+
+image_build:
+  stage: docker_build
+  image: docker:27.3.1
+  services:
+    - docker:27.3.1-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cp $TEST_ENV_FILE .env
+    - docker pull $TAG_LATEST || true
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 --pull --cache-from=$TAG_LATEST -t $TAG_COMMIT .
+    - docker push $TAG_COMMIT
+
+image_dockle:
+  stage: docker_security
+  image: docker:27.3.1
+  services:
+    - docker:27.3.1-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $TAG_COMMIT
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -e DOCKLE_ACCEPT_FILES=settings.py goodwithtech/dockle:v0.4.14 --exit-code 1 $TAG_COMMIT
+  allow_failure: true
+
+image_trivy:
+  stage: docker_security
+  image: docker:27.3.1
+  services:
+    - docker:27.3.1-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $TAG_COMMIT
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.58.0 image --exit-code 1 --severity CRITICAL $TAG_COMMIT
+  allow_failure: true
+
+django_test:
+  stage: code_test
+  image: docker:27.3.1
+  services:
+    - docker:27.3.1-dind
+    - postgres:14.15-alpine
+    - redis:7.4.1-alpine
+  variables:
+    POSTGRES_DB: test
+    POSTGRES_USER: django
+    POSTGRES_PASSWORD: django
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $TAG_COMMIT
+    - docker run --rm --network gitlab_proxy -v /var/run/docker.sock:/var/run/docker.sock $TAG_COMMIT python3 manage.py test
+
+image_release:
+  stage: docker_release
+  image: docker:27.3.1
+  services:
+    - docker:27.3.1-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $TAG_COMMIT
+    - docker tag $TAG_COMMIT $TAG_LATEST
+    - docker push $TAG_LATEST
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
