@@ -1,4 +1,4 @@
-FROM python:3.14.3-alpine
+FROM python:3.14.10-alpine
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -11,7 +11,7 @@ RUN addgroup -S "$APP_USER" && adduser -H -D -S -G "$APP_USER" "$APP_USER"
 WORKDIR $APP_HOME
 
 # hadolint ignore=DL3013,DL3018
-RUN apk update && apk --no-cache add postgresql-dev python3-dev && pip install --no-cache-dir --upgrade pip
+RUN apk update && apk --no-cache add gcc musl-dev postgresql-dev python3-dev && pip install --no-cache-dir --upgrade pip
 COPY ./requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
