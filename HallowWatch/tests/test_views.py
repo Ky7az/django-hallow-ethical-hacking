@@ -412,3 +412,43 @@ class ContentAPITestCase(APITestCase):
         self.assertEqual(Content.objects.count(), 1)
         with self.assertRaises(ObjectDoesNotExist):
             Content.objects.get(feed=feed_1, source=source_1)
+
+    def test_bulk_view_contents(self):
+        source_x = Source.objects.create(
+            name='Source x',
+            slug='source-x',
+            source_type='security',
+            url='www.source-x.tld',
+        )
+        feed_x = Feed.objects.create(source=source_x)
+        content_x = Content.objects.create(
+            feed=feed_x, source=source_x, title='Title-x', url='www.content-x.tld'
+        )
+        ids = list(
+            Content.objects.exclude(id=content_x.id).values_list('id', flat=True)
+        )
+        # Unauthorized
+        response = self.client.post(
+            '/api/watch/contents/bulk_view/', {'ids': ids}, format='json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        # Authorized
+        self.authenticate_user()
+        response = self.client.post(
+            '/api/watch/contents/bulk_view/', {'ids': ids}, format='json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['updated'], 2)
+        self.assertEqual(Content.objects.filter(id__in=ids, viewed=True).count(), 2)
+        content_x.refresh_from_db()
+        self.assertFalse(content_x.viewed)
+
+    def test_bulk_view_contents_invalid(self):
+        self.authenticate_user()
+        for data in ({}, {'ids': []}, {'ids': 'x'}, {'ids': ['x']}):
+            response = self.client.post(
+                '/api/watch/contents/bulk_view/', data, format='json'
+            )
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Content.objects.filter(viewed=True).count(), 0)

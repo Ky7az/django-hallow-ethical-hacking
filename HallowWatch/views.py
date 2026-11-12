@@ -6,10 +6,12 @@ from django_filters.rest_framework import (
     FilterSet,
     ModelMultipleChoiceFilter,
 )
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from HallowWatch.models import Content, Feed, Source, Tag
 from HallowWatch.serializers import (
@@ -76,3 +78,18 @@ class ContentViewSet(viewsets.ModelViewSet):
     filterset_class = ContentFilter
     pagination_class = ContentPagination
     lookup_field = 'id'
+
+    @action(methods=['POST'], detail=False)
+    def bulk_view(self, request):
+        ids = request.data.get('ids')
+        if (
+            not isinstance(ids, list)
+            or not ids
+            or not all(isinstance(i, int) and not isinstance(i, bool) for i in ids)
+        ):
+            return Response(
+                {'ids': 'A non-empty list of integers is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        updated = Content.objects.filter(id__in=ids).update(viewed=True)
+        return Response({'updated': updated}, status=status.HTTP_200_OK)
